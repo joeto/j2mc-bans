@@ -1,0 +1,20 @@
+name: J2MC_Bans
+main: to.joe.j2mc.bans.J2MC_Bans
+version: 0.0prealpha
+website: http://forums.joe.to
+author: J2 Minecraft Plugin Team
+description: Ban module.
+depend: J2MC_Core
+commands:
+  addban:
+    description: Adds a ban for a player.
+    usage: |
+            /addban player reason
+  ban:
+    description: Bans the player (accepts partial names)
+    usage: |
+            /ban player reason
+  kick:
+    description: Kicks the player
+    usage: |
+            /kick player reason
