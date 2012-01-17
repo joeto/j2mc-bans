@@ -1,5 +1,6 @@
 package to.joe.j2mc.bans.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class KickCommand extends MasterCommand{
             BanFunctions methods = new BanFunctions();
             Player target = null;
             try{
-            	target = J2MC_Manager.getVisibility().getPlayer(args[1], null);
+            	target = J2MC_Manager.getVisibility().getPlayer(args[0], null);
             }catch(BadPlayerMatchException e){
             	player.sendMessage(ChatColor.RED + e.getMessage());
             	return;

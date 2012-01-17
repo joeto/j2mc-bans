@@ -1,7 +1,5 @@
 package to.joe.j2mc.bans.command;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,12 +11,10 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
-import to.joe.j2mc.core.exceptions.NoPlayersException;
-import to.joe.j2mc.core.exceptions.TooManyPlayersException;
 
 public class BanCommand extends MasterCommand{
 	
-	public BanCommand(J2MC_Bans Bans) {
+	public BanCommand (J2MC_Bans Bans) {
 		super(Bans);
 	}
 	

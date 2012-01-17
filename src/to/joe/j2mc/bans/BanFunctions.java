@@ -15,7 +15,7 @@ import to.joe.j2mc.core.exceptions.LostSQLConnectionException;
 public class BanFunctions {
 	
     public ArrayList<Ban> bans;
- 
+    
 	public void callAddBan(String adminName, String[] split, Location location) {
 		//TODO: Co-op ban runners(mcbans/mcbouncer)
         String banReason = "";
@@ -44,22 +44,23 @@ public class BanFunctions {
             unBanTime = timeNow + (60 * banTime);
         }
         try {
-        	PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("INSERT INTO j2bans (name,reason,admin,unbantime,timeofban,x,y,z,pitch,yaw,world,server) VALUES(?,?,?,?,?,?,?,?,?,?,?,?");
-        	ps.setString(0, name);
-        	ps.setString(1, banReason);
-        	ps.setString(2, adminName);
-        	ps.setLong(3, unBanTime);
-        	ps.setLong(4, timeNow);
-        	ps.setDouble(5, x);
-        	ps.setDouble(6, y);
-        	ps.setDouble(7, z);
-        	ps.setFloat(8, pitch);
-        	ps.setFloat(9, yaw);
-        	ps.setString(10, world);
-        	ps.setInt(11, J2MC_Manager.getServerID());
+        	PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("INSERT INTO j2bans (name,reason,admin,unbantime,timeofban,x,y,z,pitch,yaw,world,server) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+        	ps.setString(1, name);
+        	ps.setString(2, banReason);
+        	ps.setString(3, adminName);
+        	ps.setLong(4, unBanTime);
+        	ps.setLong(5, timeNow);
+        	ps.setDouble(6, x);
+        	ps.setDouble(7, y);
+        	ps.setDouble(8, z);
+        	ps.setFloat(9, pitch);
+        	ps.setFloat(10, yaw);
+        	ps.setString(11, world);
+        	ps.setInt(12, J2MC_Manager.getServerID());
+        	J2MC_Manager.getCore().adminAndLog(ps.toString());
 			J2MC_Manager.getMySQL().execute(ps);
             final Ban newban = new Ban(name.toLowerCase(), banReason, unBanTime, timeNow, timeNow, false);
-            this.bans.add(newban);
+            bans.add(newban);
 		} catch (SQLException e) {
 			J2MC_Manager.getLog().severe("Oh shit! SQL exception when adding a ban!", e);
 		} catch (LostSQLConnectionException e) {
@@ -89,7 +90,7 @@ public class BanFunctions {
         }
         try {
         	PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("UPDATE j2bans SET unbanned=1 WHERE name= ? ");
-        	ps.setString(0, player);
+        	ps.setString(1, player);
         	J2MC_Manager.getMySQL().execute(ps);
         }catch (SQLException e) {
 			J2MC_Manager.getLog().severe("Oh shit! SQL exception when unbanning!", e);
