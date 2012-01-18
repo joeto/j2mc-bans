@@ -15,12 +15,13 @@ public class AddBanCommand extends MasterCommand{
 	public AddBanCommand(J2MC_Bans Bans) {
 		super(Bans);
 	}
+	
+	BanFunctions methods = new BanFunctions();
 
 	@Override
 	public void exec(CommandSender sender, String commandName, String[] args,
 			Player player, boolean isPlayer) {
 		if(!isPlayer || player.hasPermission("j2mc.bans.banner")){
-			BanFunctions methods = new BanFunctions();
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Usage: /addban playername reason");
                 sender.sendMessage(ChatColor.RED + " reason can have spaces in it");

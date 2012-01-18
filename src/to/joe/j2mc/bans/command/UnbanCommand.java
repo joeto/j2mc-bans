@@ -14,6 +14,8 @@ public class UnbanCommand extends MasterCommand{
 		super(Bans);
 	}
 	
+	BanFunctions methods = new BanFunctions();
+	
 	@Override
 	public void exec(CommandSender sender, String commandName, String[] args,
 			Player player, boolean isPlayer) {
@@ -23,7 +25,6 @@ public class UnbanCommand extends MasterCommand{
                 return;
             }
             final String name = args[0];
-            BanFunctions methods = new BanFunctions();
             methods.unban(name);
 		}
 	}
