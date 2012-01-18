@@ -60,7 +60,12 @@ public class BanFunctions {
         	J2MC_Manager.getCore().adminAndLog(ps.toString());
 			J2MC_Manager.getMySQL().execute(ps);
             final Ban newban = new Ban(name.toLowerCase(), banReason, unBanTime, timeNow, timeNow, false);
-            bans.add(newban);
+    		if(this.bans == null){
+    			J2MC_Manager.getLog().info("Yeah hi! Bans array is null, checking from BanFunctions.java 64");
+    		}else{
+    			J2MC_Manager.getLog().info("Bans array not null, checking from BanFunctions.java 66");
+    		}
+            this.bans.add(newban);
 		} catch (SQLException e) {
 			J2MC_Manager.getLog().severe("Oh shit! SQL exception when adding a ban!", e);
 		} catch (LostSQLConnectionException e) {

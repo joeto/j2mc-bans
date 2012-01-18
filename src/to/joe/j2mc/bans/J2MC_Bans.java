@@ -36,6 +36,12 @@ public class J2MC_Bans extends JavaPlugin{
 		
 		BanFunctions methods = new BanFunctions();
 		methods.bans = new ArrayList<Ban>();
+		J2MC_Manager.getLog().info("ArrayList initalized");
+		if(methods.bans == null){
+			J2MC_Manager.getLog().info("Yeah hi! Bans array is null, checking from J2MC_Bans 41");
+		}else{
+			J2MC_Manager.getLog().info("Bans array not null, checking from J2MC_Bans 43");
+		}
 		Bukkit.getServer().getPluginManager().registerEvent(Type.PLAYER_PRELOGIN, new JoinListener(), Priority.Normal, this);
 	}
 	
@@ -46,9 +52,7 @@ public class J2MC_Bans extends JavaPlugin{
 		        final long timeNow = curTime.getTime() / 1000;
 				String reason = null;
 				BanFunctions methods = new BanFunctions();
-		        ArrayList<Ban> banhat = methods.bans;
-		        if(banhat != null){
-		        for (final Ban ban : banhat) {
+		        for (final Ban ban : methods.bans) {
 		            if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
 		                // unban(user);
 		                // tempbans
@@ -59,7 +63,6 @@ public class J2MC_Bans extends JavaPlugin{
 		            if (ban.getTimeLoaded() < (timeNow - 60)) {
 		                methods.bans.remove(ban);
 		            }
-		        }
 		        }
 		        if (reason == null) {
 		        	ResultSet rs = null;
