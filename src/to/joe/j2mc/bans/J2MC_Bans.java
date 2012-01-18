@@ -19,6 +19,8 @@ import to.joe.j2mc.bans.command.AddBanCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 
 public class J2MC_Bans extends JavaPlugin{
+	
+	BanFunctions methods = new BanFunctions();
 
 	@Override
 	public void onDisable() {
@@ -34,7 +36,6 @@ public class J2MC_Bans extends JavaPlugin{
 		this.getCommand("kick").setExecutor(new KickCommand(this));
 		this.getCommand("unban").setExecutor(new UnbanCommand(this));
 		
-		BanFunctions methods = new BanFunctions();
 		methods.bans = new ArrayList<Ban>();
 		J2MC_Manager.getLog().info("ArrayList initalized");
 		if(methods.bans == null){
@@ -51,7 +52,6 @@ public class J2MC_Bans extends JavaPlugin{
 		        final Date curTime = new Date();
 		        final long timeNow = curTime.getTime() / 1000;
 				String reason = null;
-				BanFunctions methods = new BanFunctions();
 		        for (final Ban ban : methods.bans) {
 		            if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
 		                // unban(user);
