@@ -9,12 +9,13 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.command.MasterCommand;
 
 public class UnbanCommand extends MasterCommand{
+	
+	public J2MC_Bans plugin;
 
 	public UnbanCommand(J2MC_Bans Bans){
 		super(Bans);
+		this.plugin = Bans;
 	}
-	
-	BanFunctions methods = new BanFunctions();
 	
 	@Override
 	public void exec(CommandSender sender, String commandName, String[] args,
@@ -25,7 +26,7 @@ public class UnbanCommand extends MasterCommand{
                 return;
             }
             final String name = args[0];
-            methods.unban(name);
+            plugin.methods.unban(name, sender.getName());
 		}
 	}
 }

@@ -57,14 +57,8 @@ public class BanFunctions {
         	ps.setFloat(10, yaw);
         	ps.setString(11, world);
         	ps.setInt(12, J2MC_Manager.getServerID());
-        	J2MC_Manager.getCore().adminAndLog(ps.toString());
 			J2MC_Manager.getMySQL().execute(ps);
             final Ban newban = new Ban(name.toLowerCase(), banReason, unBanTime, timeNow, timeNow, false);
-    		if(this.bans == null){
-    			J2MC_Manager.getLog().info("Yeah hi! Bans array is null, checking from BanFunctions.java 64");
-    		}else{
-    			J2MC_Manager.getLog().info("Bans array not null, checking from BanFunctions.java 66");
-    		}
             this.bans.add(newban);
 		} catch (SQLException e) {
 			J2MC_Manager.getLog().severe("Oh shit! SQL exception when adding a ban!", e);
@@ -87,7 +81,7 @@ public class BanFunctions {
         return builder.toString();
 	}
 	
-	public void unban(String player){
+	public void unban(String player, String AdminName){
         for (final Ban ban : bans) {
             if (ban.getName().equalsIgnoreCase(player)) {
                 ban.unBan();
@@ -104,6 +98,7 @@ public class BanFunctions {
 		} catch (ClassNotFoundException e) {
 			J2MC_Manager.getLog().severe("Oh shit! Class not found when unbanning!", e);
 		}
+		J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Unbanning " + player + " by " + AdminName);
 	}
 	
     public void forceKick(String name, String reason) {

@@ -11,17 +11,18 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.command.MasterCommand;
 
 public class AddBanCommand extends MasterCommand{
+	
+	public J2MC_Bans plugin;
 
 	public AddBanCommand(J2MC_Bans Bans) {
 		super(Bans);
+		this.plugin = Bans;
 	}
-	
-	BanFunctions methods = new BanFunctions();
 
 	@Override
 	public void exec(CommandSender sender, String commandName, String[] args,
 			Player player, boolean isPlayer) {
-		if(!isPlayer || player.hasPermission("j2mc.bans.banner")){
+		if(sender.hasPermission("j2mc.bans.banner")){
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Usage: /addban playername reason");
                 sender.sendMessage(ChatColor.RED + " reason can have spaces in it");
@@ -33,7 +34,7 @@ public class AddBanCommand extends MasterCommand{
             } else {
                 loc = player.getLocation();
             }
-            methods.callAddBan(player.getName(), args, loc);
+            plugin.methods.callAddBan(sender.getName(), args, loc);
 		}
 	}
 

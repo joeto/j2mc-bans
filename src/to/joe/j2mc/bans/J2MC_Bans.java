@@ -20,7 +20,7 @@ import to.joe.j2mc.core.J2MC_Manager;
 
 public class J2MC_Bans extends JavaPlugin{
 	
-	BanFunctions methods = new BanFunctions();
+	public BanFunctions methods = new BanFunctions();
 
 	@Override
 	public void onDisable() {
@@ -38,11 +38,6 @@ public class J2MC_Bans extends JavaPlugin{
 		
 		methods.bans = new ArrayList<Ban>();
 		J2MC_Manager.getLog().info("ArrayList initalized");
-		if(methods.bans == null){
-			J2MC_Manager.getLog().info("Yeah hi! Bans array is null, checking from J2MC_Bans 41");
-		}else{
-			J2MC_Manager.getLog().info("Bans array not null, checking from J2MC_Bans 43");
-		}
 		Bukkit.getServer().getPluginManager().registerEvent(Type.PLAYER_PRELOGIN, new JoinListener(), Priority.Normal, this);
 	}
 	
