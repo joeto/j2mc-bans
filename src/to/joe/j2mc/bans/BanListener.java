@@ -1,6 +1,5 @@
 package to.joe.j2mc.bans;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 

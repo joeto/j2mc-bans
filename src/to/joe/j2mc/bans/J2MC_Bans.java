@@ -120,6 +120,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
 
         this.bans = new ArrayList<Ban>();
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
+        Bukkit.getServer().getPluginManager().registerEvents(new BanListener(this), this);
     }
 
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
