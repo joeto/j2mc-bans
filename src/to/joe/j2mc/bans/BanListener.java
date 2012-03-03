@@ -1,5 +1,6 @@
 package to.joe.j2mc.bans;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -7,12 +8,18 @@ import to.joe.j2mc.core.event.MessageEvent;
 
 public class BanListener implements Listener{
 
+    J2MC_Bans plugin;
+    
+    public BanListener(J2MC_Bans Bans){
+        this.plugin = Bans;
+    }
+    
     @EventHandler
     public void onIRCMessageEvent(MessageEvent event) {
         if(event.targetting("NEWADDBAN")){
-            String admin;
-            String target;
-            String reason;
+            String admin = null;
+            String target = null;
+            String reason = null;
             String[] var = event.getMessage().split("&");
             for(String variable : var){
                 String[] lolrunningoutofnames = variable.split("=");
@@ -28,7 +35,11 @@ public class BanListener implements Listener{
                     reason = value.replace("*OMGROFLREPLACEMEIWITHAMPERSAND*", "&").replace("*OMGROFLREPLACEMEWITHEQUALS", "=");
                 }
             }
-            
+            String[] reasonarray = reason.split(" ");
+            String[] args = new String[30];
+            args[0] = target;
+            args = (String[]) ArrayUtils.addAll(args, reasonarray);
+            plugin.callAddBan(admin, args, null);
         }
         if(event.targetting("")){
             
