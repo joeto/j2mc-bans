@@ -35,10 +35,12 @@ public class BanListener implements Listener{
                     reason = value.replace("*OMGROFLREPLACEMEIWITHAMPERSAND*", "&").replace("*OMGROFLREPLACEMEWITHEQUALS", "=");
                 }
             }
-            String[] reasonarray = reason.split(" ");
             String[] args = new String[30];
             args[0] = target;
-            args = (String[]) ArrayUtils.addAll(args, reasonarray);
+            String[] reasonarray = reason.split(" ");
+            for(String word : reasonarray){
+                args[args.length] = word;
+            }
             plugin.callAddBan(admin, args, null);
         }
         if(event.targetting("")){
