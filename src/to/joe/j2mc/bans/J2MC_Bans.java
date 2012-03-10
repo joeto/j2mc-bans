@@ -129,6 +129,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
         for (final Ban ban : this.bans) {
+            this.getLogger().info("Ban map checking");
             if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
                 // unban(user);
                 // tempbans
@@ -139,6 +140,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             if (ban.getTimeLoaded() < (timeNow - 60)) {
                 this.bans.remove(ban);
             }
+            this.getLogger().info("ban map checked.");
         }
         if (reason == null) {
             ResultSet rs = null;

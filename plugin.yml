@@ -21,3 +21,10 @@ commands:
     description: Unbans the player
     usage: |
             /unban player
+  stealthkick:
+    description: stealth kick
+    usage: |
+            /stealthkick player reason
+permissions:
+  j2mc.bans.admin:
+    description: gives access to all the commands  
