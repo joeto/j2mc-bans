@@ -11,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -123,13 +125,13 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         Bukkit.getServer().getPluginManager().registerEvents(new BanListener(this), this);
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPreLogin(PlayerPreLoginEvent event) {
         final String name = event.getName();
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
         for (final Ban ban : this.bans) {
-            this.getLogger().info("Ban map checking");
             if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
                 // unban(user);
                 // tempbans
@@ -140,7 +142,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             if (ban.getTimeLoaded() < (timeNow - 60)) {
                 this.bans.remove(ban);
             }
-            this.getLogger().info("ban map checked.");
         }
         if (reason == null) {
             ResultSet rs = null;
