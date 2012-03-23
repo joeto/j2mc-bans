@@ -18,7 +18,7 @@ public class KickCommand extends MasterCommand {
 
     @Override
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
-        if (sender.hasPermission("j2mc.bans.admin")) {
+        if (sender.hasPermission("j2mc.bans.kick")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Usage: /kick playername reason");
                 return;

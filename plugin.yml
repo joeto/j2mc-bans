@@ -1,6 +1,6 @@
 name: J2MC_Bans
 main: to.joe.j2mc.bans.J2MC_Bans
-version: 0.0prealpha
+version: 1.0
 website: http://forums.joe.to
 author: J2 Minecraft Plugin Team
 description: Ban module.
@@ -26,5 +26,15 @@ commands:
     usage: |
             /stealthkick player reason
 permissions:
+  j2mc.bans.ban:
+    description: ban
+  j2mc.bans.kick:
+    description: kick
+  j2mc.bans.unban:
+    description: unban
   j2mc.bans.admin:
-    description: gives access to all the commands  
+    description: gives access to all the commands
+    children:
+      j2mc.bans.ban: true
+      j2mc.bans.kick: true
+      j2mc.bans.unban: true  

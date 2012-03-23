@@ -19,7 +19,7 @@ public class BanCommand extends MasterCommand {
 
     @Override
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
-        if (sender.hasPermission("j2mc.bans.admin")) {
+        if (sender.hasPermission("j2mc.bans.ban")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Usage: /ban playername reason");
                 sender.sendMessage(ChatColor.RED + " reason can have spaces in it");
