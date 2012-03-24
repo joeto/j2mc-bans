@@ -8,6 +8,7 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
+import to.joe.j2mc.core.event.MessageEvent;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 
 public class KickCommand extends MasterCommand {
@@ -31,17 +32,22 @@ public class KickCommand extends MasterCommand {
                 return;
             }
             final String reason = J2MC_Core.combineSplit(1, args, " ");
+            final String playerMsg;
+            final String adminMsg;
+            final String publicMsg;
             if (reason != "") {
-                target.kickPlayer("Kicked: " + reason);
-                J2MC_Manager.getCore().adminAndLog(sender.getName() + " kicked " + target.getName() + "(" + reason + ")");
-                J2MC_Manager.getCore().messageNonAdmin(ChatColor.RED + target.getName() + " kicked (" + reason + ")");
-                // TODO: IRC broadcast
+                playerMsg = "Kicked: " + reason;
+                adminMsg = sender.getName() + " kicked " + target.getName() + "(" + reason + ")";
+                publicMsg = ChatColor.RED + target.getName() + " kicked (" + reason + ")";
             } else {
-                target.kickPlayer("Kicked.");
-                J2MC_Manager.getCore().adminAndLog(sender.getName() + " kicked " + target.getName());
-                J2MC_Manager.getCore().messageNonAdmin(ChatColor.RED + target.getName() + " kicked");
-                // TODO: IRC broadcast
+                playerMsg = "Kicked.";
+                adminMsg = sender.getName() + " kicked " + target.getName();
+                publicMsg = ChatColor.RED + target.getName() + " kicked";
             }
+            target.kickPlayer(playerMsg);
+            J2MC_Manager.getCore().adminAndLog(adminMsg);
+            J2MC_Manager.getCore().messageNonAdmin(publicMsg);
+            this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), ChatColor.stripColor(publicMsg)));
         }
     }
 

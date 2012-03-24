@@ -22,7 +22,7 @@ public class BanCommand extends MasterCommand {
         if (sender.hasPermission("j2mc.bans.ban")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Usage: /ban playername reason");
-                sender.sendMessage(ChatColor.RED + " reason can have spaces in it");
+                sender.sendMessage(ChatColor.RED + "       reason can have spaces in it");
                 return;
             }
             Player target = null;

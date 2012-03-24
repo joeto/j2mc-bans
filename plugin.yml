@@ -7,24 +7,16 @@ description: Ban module.
 commands:
   addban:
     description: Adds a ban for a player.
-    usage: |
-            /addban player reason
+    usage: /addban player reason
   ban:
     description: Bans the player (accepts partial names)
-    usage: |
-            /ban player reason
+    usage: /ban player reason
   kick:
     description: Kicks the player
-    usage: |
-            /kick player reason
+    usage: /kick player reason
   unban:
     description: Unbans the player
-    usage: |
-            /unban player
-  stealthkick:
-    description: stealth kick
-    usage: |
-            /stealthkick player reason
+    usage: /unban player
 permissions:
   j2mc.bans.ban:
     description: ban

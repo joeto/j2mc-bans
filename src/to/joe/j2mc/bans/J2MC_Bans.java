@@ -20,7 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import to.joe.j2mc.bans.command.AddBanCommand;
 import to.joe.j2mc.bans.command.BanCommand;
 import to.joe.j2mc.bans.command.KickCommand;
-import to.joe.j2mc.bans.command.StealthKickCommand;
 import to.joe.j2mc.bans.command.UnbanCommand;
 import to.joe.j2mc.core.J2MC_Manager;
 
@@ -70,7 +69,23 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         } catch (final ClassNotFoundException e) {
             this.getLogger().log(Level.SEVERE, "Oh shit! Class not found when adding a ban!", e);
         }
-        this.forceKick(name, "Banned: " + banReason);
+        for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if ((p != null) && p.getName().equalsIgnoreCase(name)) {
+                p.getWorld().strikeLightningEffect(p.getLocation());
+                p.kickPlayer("Banned: " + banReason);
+                /*
+                 * if (!msged) { if (reason != "") {
+                 * this.j2.irc.messageRelay(name + " kicked"); } else {
+                 * this.j2.irc.messageRelay(name + " kicked (" + reason + ")");
+                 * }
+                 */
+                J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
+                /*
+                 * msged = !msged;
+                 */
+                break;
+            }
+        }
         J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Banning " + name + " by " + adminName + ": " + banReason);
     }
 
@@ -82,27 +97,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         builder.deleteCharAt(builder.length() - seperator.length());
         return builder.toString();
-    }
-
-    public void forceKick(String name, String reason) {
-        // boolean msged = false;
-        J2MC_Manager.getCore().adminAndLog(ChatColor.RED + name + " banned (" + reason + ")");
-        for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if ((p != null) && p.getName().equalsIgnoreCase(name)) {
-                p.getWorld().strikeLightningEffect(p.getLocation());
-                p.kickPlayer(reason);
-                /*
-                 * if (!msged) { if (reason != "") {
-                 * this.j2.irc.messageRelay(name + " kicked"); } else {
-                 * this.j2.irc.messageRelay(name + " kicked (" + reason + ")");
-                 * }
-                 */
-                J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
-                /*
-                 * msged = !msged;
-                 */
-            }
-        }
     }
 
     @Override
@@ -118,7 +112,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         this.getCommand("addban").setExecutor(new AddBanCommand(this));
         this.getCommand("kick").setExecutor(new KickCommand(this));
         this.getCommand("unban").setExecutor(new UnbanCommand(this));
-        this.getCommand("stealthkick").setExecutor(new StealthKickCommand(this));
 
         this.bans = new ArrayList<Ban>();
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
