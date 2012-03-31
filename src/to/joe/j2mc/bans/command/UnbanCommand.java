@@ -15,13 +15,11 @@ public class UnbanCommand extends MasterCommand {
 
     @Override
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
-        if (sender.hasPermission("j2mc.bans.unban")) {
-            if (args.length < 1) {
-                sender.sendMessage(ChatColor.RED + "Usage: /unban playername");
-                return;
-            }
-            final String name = args[0];
-            ((J2MC_Bans) this.plugin).unban(name, sender.getName());
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Usage: /unban playername");
+            return;
         }
+        final String name = args[0];
+        ((J2MC_Bans) this.plugin).unban(name, sender.getName());
     }
 }
