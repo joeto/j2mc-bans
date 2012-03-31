@@ -143,6 +143,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                     reason = "Banned: " + reason;
                 }
             } catch (final Exception e) {
+                e.printStackTrace();
                 reason = "Try again. Ban system didn't like you.";
             }
         }
