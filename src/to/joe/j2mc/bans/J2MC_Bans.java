@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ import to.joe.j2mc.bans.command.BanCommand;
 import to.joe.j2mc.bans.command.KickCommand;
 import to.joe.j2mc.bans.command.UnbanCommand;
 import to.joe.j2mc.core.J2MC_Manager;
+import to.joe.j2mc.core.event.MessageEvent;
 
 public class J2MC_Bans extends JavaPlugin implements Listener {
 
@@ -73,16 +75,10 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             if ((p != null) && p.getName().equalsIgnoreCase(name)) {
                 p.getWorld().strikeLightningEffect(p.getLocation());
                 p.kickPlayer("Banned: " + banReason);
-                /*
-                 * if (!msged) { if (reason != "") {
-                 * this.j2.irc.messageRelay(name + " kicked"); } else {
-                 * this.j2.irc.messageRelay(name + " kicked (" + reason + ")");
-                 * }
-                 */
+                HashSet<String> targets = new HashSet<String>();
+                targets.add("GAMEMSG");
+                this.getServer().getPluginManager().callEvent(new MessageEvent(targets, p.getName() + " banned (" + banReason + ")"));
                 J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
-                /*
-                 * msged = !msged;
-                 */
                 break;
             }
         }
