@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -75,9 +74,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             if ((p != null) && p.getName().equalsIgnoreCase(name)) {
                 p.getWorld().strikeLightningEffect(p.getLocation());
                 p.kickPlayer("Banned: " + banReason);
-                HashSet<String> targets = new HashSet<String>();
-                targets.add("GAMEMSG");
-                this.getServer().getPluginManager().callEvent(new MessageEvent(targets, p.getName() + " banned (" + banReason + ")"));
+                this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + banReason + ")"));
                 J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
                 break;
             }

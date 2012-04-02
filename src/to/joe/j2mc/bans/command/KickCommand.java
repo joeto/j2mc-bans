@@ -19,36 +19,34 @@ public class KickCommand extends MasterCommand {
 
     @Override
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
-        if (sender.hasPermission("j2mc.bans.kick")) {
-            if (args.length < 2) {
-                sender.sendMessage(ChatColor.RED + "Usage: /kick playername reason");
-                return;
-            }
-            Player target = null;
-            try {
-                target = J2MC_Manager.getVisibility().getPlayer(args[0], null);
-            } catch (final BadPlayerMatchException e) {
-                sender.sendMessage(ChatColor.RED + e.getMessage());
-                return;
-            }
-            final String reason = J2MC_Core.combineSplit(1, args, " ");
-            final String playerMsg;
-            final String adminMsg;
-            final String publicMsg;
-            if (reason != "") {
-                playerMsg = "Kicked: " + reason;
-                adminMsg = sender.getName() + " kicked " + target.getName() + "(" + reason + ")";
-                publicMsg = ChatColor.RED + target.getName() + " kicked (" + reason + ")";
-            } else {
-                playerMsg = "Kicked.";
-                adminMsg = sender.getName() + " kicked " + target.getName();
-                publicMsg = ChatColor.RED + target.getName() + " kicked";
-            }
-            target.kickPlayer(playerMsg);
-            J2MC_Manager.getCore().adminAndLog(adminMsg);
-            J2MC_Manager.getCore().messageNonAdmin(publicMsg);
-            this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), ChatColor.stripColor(publicMsg)));
+        if (args.length < 2) {
+            sender.sendMessage(ChatColor.RED + "Usage: /kick playername reason");
+            return;
         }
+        Player target = null;
+        try {
+            target = J2MC_Manager.getVisibility().getPlayer(args[0], null);
+        } catch (final BadPlayerMatchException e) {
+            sender.sendMessage(ChatColor.RED + e.getMessage());
+            return;
+        }
+        final String reason = J2MC_Core.combineSplit(1, args, " ");
+        final String playerMsg;
+        final String adminMsg;
+        final String publicMsg;
+        if (reason != "") {
+            playerMsg = "Kicked: " + reason;
+            adminMsg = sender.getName() + " kicked " + target.getName() + "(" + reason + ")";
+            publicMsg = ChatColor.RED + target.getName() + " kicked (" + reason + ")";
+        } else {
+            playerMsg = "Kicked.";
+            adminMsg = sender.getName() + " kicked " + target.getName();
+            publicMsg = ChatColor.RED + target.getName() + " kicked";
+        }
+        target.kickPlayer(playerMsg);
+        J2MC_Manager.getCore().adminAndLog(adminMsg);
+        J2MC_Manager.getCore().messageNonAdmin(publicMsg);
+        this.plugin.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), ChatColor.stripColor(publicMsg)));
     }
 
 }

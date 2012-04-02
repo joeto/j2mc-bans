@@ -8,15 +8,23 @@ commands:
   addban:
     description: Adds a ban for a player.
     usage: /addban player reason
+    permission: j2mc.bans.ban
+    permission-message: Can't let you do that Star Fox
   ban:
     description: Bans the player (accepts partial names)
     usage: /ban player reason
+    permission: j2mc.bans.ban
+    permission-message: Can't let you do that Star Fox
   kick:
     description: Kicks the player
     usage: /kick player reason
+    permission: j2mc.bans.kick
+    permission-message: Can't let you do that Star Fox
   unban:
     description: Unbans the player
     usage: /unban player
+    permission: j2mc.bans.unban
+    permission-message: Can't let you do that Star Fox
 permissions:
   j2mc.bans.ban:
     description: ban
