@@ -25,6 +25,12 @@ commands:
     usage: /unban player
     permission: j2mc.bans.unban
     permission-message: Can't let you do that Star Fox
+  j2lookup:
+    aliases: [j2]
+    description: Look up player's ban history
+    usage: /j2lookup player
+    permission: j2mc.bans.lookup
+    permission-message: Can't let you do that Star Fox
 permissions:
   j2mc.bans.ban:
     description: ban
@@ -32,9 +38,12 @@ permissions:
     description: kick
   j2mc.bans.unban:
     description: unban
+  j2mc.bans.lookup:
+    description: lookup
   j2mc.bans.admin:
     description: gives access to all the commands
     children:
       j2mc.bans.ban: true
       j2mc.bans.kick: true
-      j2mc.bans.unban: true  
+      j2mc.bans.unban: true
+      j2mc.bans.lookup: true  
