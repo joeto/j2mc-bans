@@ -28,6 +28,7 @@ import to.joe.j2mc.core.event.MessageEvent;
 public class J2MC_Bans extends JavaPlugin implements Listener {
 
     private ArrayList<Ban> bans;
+    private Object bansSync=new Object();
 
     public void callAddBan(String adminName, String[] split, Location location) {
         // TODO: Co-op ban runners(mcbans/mcbouncer)
@@ -65,7 +66,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             ps.setInt(12, J2MC_Manager.getServerID());
             ps.execute();
             final Ban newban = new Ban(name.toLowerCase(), banReason, unBanTime, timeNow, timeNow, false);
-            synchronized (this.bans) {
+            synchronized (this.bansSync) {
                 this.bans.add(newban);
             }
         } catch (final SQLException e) {
@@ -121,7 +122,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
-        synchronized (this.bans) {
+        synchronized (this.bansSync) {
             for (final Ban ban : this.bans) {
                 if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
                     // unban(user);
@@ -160,7 +161,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
     }
 
     public void unban(String player, String AdminName) {
-        synchronized (this.bans) {
+        synchronized (this.bansSync) {
             for (final Ban ban : this.bans) {
                 if (ban.getName().equalsIgnoreCase(player)) {
                     ban.unBan();
