@@ -122,6 +122,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
+        try{
         synchronized (this.bansSync) {
             for (final Ban ban : this.bans) {
                 if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
@@ -136,6 +137,10 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 }
             }
         }
+        }
+        catch (Exception e){
+            reason = "Try joining again. System bug.";
+        }
         if (reason == null) {
             ResultSet rs = null;
             try {
@@ -148,7 +153,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 }
             } catch (final Exception e) {
                 e.printStackTrace();
-                reason = "Try again. Ban system didn't like you.";
+                reason = "Try joining again. System bug.";
             }
         }
         if (reason != null) {
