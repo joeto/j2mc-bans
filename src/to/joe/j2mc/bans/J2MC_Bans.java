@@ -29,6 +29,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
 
     private ArrayList<Ban> bans;
     private Object bansSync=new Object();
+    private final String joinError="";
 
     public void callAddBan(String adminName, String[] split, Location location) {
         // TODO: Co-op ban runners(mcbans/mcbouncer)
@@ -139,7 +140,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         }
         catch (Exception e){
-            reason = "Try joining again. System bug.";
+            reason = this.joinError;
         }
         if (reason == null) {
             ResultSet rs = null;
@@ -153,11 +154,11 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 }
             } catch (final Exception e) {
                 e.printStackTrace();
-                reason = "Try joining again. System bug.";
+                reason = this.joinError;
             }
         }
         if (reason != null) {
-            if (!reason.equals("Try again. Ban system didn't like you.")) {
+            if (!reason.equals(this.joinError)) {
                 reason = "Visit http://www.joe.to/unban/ for unban";
             }
             event.setKickMessage(reason);
