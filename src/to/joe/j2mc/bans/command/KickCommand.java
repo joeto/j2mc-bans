@@ -36,11 +36,11 @@ public class KickCommand extends MasterCommand {
         final String publicMsg;
         if (reason != "") {
             playerMsg = "Kicked: " + reason;
-            adminMsg = sender.getName() + " kicked " + target.getName() + "(" + reason + ")";
+            adminMsg = ChatColor.RED + sender.getName() + " kicked " + target.getName() + "(" + reason + ")";
             publicMsg = ChatColor.RED + target.getName() + " kicked (" + reason + ")";
         } else {
             playerMsg = "Kicked.";
-            adminMsg = sender.getName() + " kicked " + target.getName();
+            adminMsg = ChatColor.RED + sender.getName() + " kicked " + target.getName();
             publicMsg = ChatColor.RED + target.getName() + " kicked";
         }
         target.kickPlayer(playerMsg);
