@@ -4,7 +4,6 @@ version: 1.0
 website: http://forums.joe.to
 author: J2 Minecraft Plugin Team
 description: Ban module.
-loadbefore: [IRC]
 commands:
   addban:
     description: Adds a ban for a player.
