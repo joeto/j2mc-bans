@@ -28,7 +28,7 @@ public class AddBanCommand extends MasterCommand {
         } else {
             loc = player.getLocation();
         }
-        ((J2MC_Bans) this.plugin).callAddBan(sender.getName(), args, loc);
+        ((J2MC_Bans) this.plugin).callAddBan(sender.getName(), args, loc, false);
     }
 
 }

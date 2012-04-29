@@ -28,10 +28,10 @@ import to.joe.j2mc.core.event.MessageEvent;
 public class J2MC_Bans extends JavaPlugin implements Listener {
 
     private ArrayList<Ban> bans;
-    private Object bansSync=new Object();
-    private final String joinError="";
+    private Object bansSync = new Object();
+    private final String joinError = "";
 
-    public void callAddBan(String adminName, String[] split, Location location) {
+    public void callAddBan(String adminName, String[] split, Location location, boolean announce) {
         // TODO: Co-op ban runners(mcbans/mcbouncer)
         String banReason = "";
         banReason = this.combineSplit(1, split, " ");
@@ -50,7 +50,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
-        final long unBanTime = 0; //TODO handle tempbans
+        final long unBanTime = 0; // TODO handle tempbans
         try {
             final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("INSERT INTO j2bans (name,reason,admin,unbantime,timeofban,x,y,z,pitch,yaw,world,server) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, name);
@@ -77,9 +77,11 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
             if ((p != null) && p.getName().equalsIgnoreCase(name)) {
-                p.getWorld().strikeLightningEffect(p.getLocation());
-                p.kickPlayer("Banned: " + banReason);
-                this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + banReason + ")"));
+                if (announce) {
+                    p.getWorld().strikeLightningEffect(p.getLocation());
+                    p.kickPlayer("Banned: " + banReason);
+                    this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + banReason + ")"));
+                }
                 J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
                 break;
             }
@@ -123,23 +125,22 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
-        try{
-        synchronized (this.bansSync) {
-            for (final Ban ban : this.bans) {
-                if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
-                    // unban(user);
-                    // tempbans
-                }
-                if ((ban.getTimeLoaded() > (timeNow - 60)) && ban.getName().equalsIgnoreCase(name) && ban.isBanned()) {
-                    reason = "Banned: " + ban.getReason();
-                }
-                if (ban.getTimeLoaded() < (timeNow - 60)) {
-                    this.bans.remove(ban);
+        try {
+            synchronized (this.bansSync) {
+                for (final Ban ban : this.bans) {
+                    if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
+                        // unban(user);
+                        // tempbans
+                    }
+                    if ((ban.getTimeLoaded() > (timeNow - 60)) && ban.getName().equalsIgnoreCase(name) && ban.isBanned()) {
+                        reason = "Banned: " + ban.getReason();
+                    }
+                    if (ban.getTimeLoaded() < (timeNow - 60)) {
+                        this.bans.remove(ban);
+                    }
                 }
             }
-        }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             reason = this.joinError;
         }
         if (reason == null) {

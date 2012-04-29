@@ -31,7 +31,7 @@ public class BanListener implements Listener{
             prep.add(target);
             prep.add(reason);
             String[] args = (String[]) prep.toArray(new String[0]);
-            plugin.callAddBan(admin, args, null);
+            plugin.callAddBan(admin, args, null, false);
             HashSet<String> targets = new HashSet<String>();
             targets.add("SendNotice " + sender);
             plugin.getServer().getPluginManager().callEvent(new MessageEvent(targets, "Banned " + target));
@@ -56,7 +56,7 @@ public class BanListener implements Listener{
             prep.add(player.getName());
             prep.add(reason);
             String[] args = (String[]) prep.toArray(new String[0]);
-            plugin.callAddBan(admin, args, null);
+            plugin.callAddBan(admin, args, null, true);
             HashSet<String> targets = new HashSet<String>();
             targets.add("SendNotice " + sender);
             plugin.getServer().getPluginManager().callEvent(new MessageEvent(targets, "Banned " + player.getName()));
