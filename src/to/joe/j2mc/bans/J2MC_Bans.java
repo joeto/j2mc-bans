@@ -86,6 +86,9 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 break;
             }
         }
+        if (announce) {
+            J2MC_Manager.getCore().messageByNoPermission(ChatColor.RED + name + " banned (" + banReason + ")", "j2mc.core.admin");
+        }
         J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Banning " + name + " by " + adminName + ": " + banReason);
     }
 
