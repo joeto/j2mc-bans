@@ -77,9 +77,9 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
             if ((p != null) && p.getName().equalsIgnoreCase(name)) {
+                p.kickPlayer("Banned: " + banReason);
                 if (announce) {
                     p.getWorld().strikeLightningEffect(p.getLocation());
-                    p.kickPlayer("Banned: " + banReason);
                     this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + banReason + ")"));
                 }
                 J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
