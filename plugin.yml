@@ -25,6 +25,7 @@ commands:
     permission: j2mc.bans.kick
     permission-message: Can't let you do that Star Fox
   unban:
+    aliases: [pardon]
     description: Unbans the player
     usage: /unban player
     permission: j2mc.bans.unban
