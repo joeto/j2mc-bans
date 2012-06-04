@@ -13,16 +13,19 @@ commands:
     permission: j2mc.bans.ban
     permission-message: Can't let you do that Star Fox
   ban:
+    aliases: [b]
     description: Bans the player (accepts partial names)
     usage: /ban player reason
     permission: j2mc.bans.ban
     permission-message: Can't let you do that Star Fox
   kick:
+    aliases: [k]
     description: Kicks the player
     usage: /kick player reason
     permission: j2mc.bans.kick
     permission-message: Can't let you do that Star Fox
   unban:
+    aliases: [pardon]
     description: Unbans the player
     usage: /unban player
     permission: j2mc.bans.unban
