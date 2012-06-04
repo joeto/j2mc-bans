@@ -13,25 +13,19 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class UnbanCommand extends MasterCommand {
+public class UnbanIPCommand extends MasterCommand {
 
-    public UnbanCommand(J2MC_Bans Bans) {
+    public UnbanIPCommand(J2MC_Bans Bans) {
         super(Bans);
     }
 
     @Override
     public void exec(CommandSender sender, String commandName, String[] args, Player player, boolean isPlayer) {
-        if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /unban playername");
-            return;
-        }
-        final String name = args[0];
-        ((J2MC_Bans) this.plugin).unban(name, sender.getName());
         ResultSet rs = null;
         String result = "";
         try {
             final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT IP FROM `alias` WHERE name=? order by Time desc limit 1");
-            ps.setString(1, name);
+            ps.setString(1, args[0]);
             rs = ps.executeQuery();
         } catch (final SQLException e) {
             this.plugin.getLogger().warning(ChatColor.RED + "Unable to load user/ip from MySQL. Oh hell");
@@ -46,10 +40,13 @@ public class UnbanCommand extends MasterCommand {
             this.plugin.getLogger().warning(ChatColor.RED + "Unable to load user/ip from MySQL. Oh hell");
             this.plugin.getLogger().log(Level.SEVERE, "SQL Exception:", ex);
         }
-        if(!result.isEmpty()){
-            if(plugin.getServer().getIPBans().contains(result)){
-                sender.sendMessage(ChatColor.RED + "That user's ip is banned. If necessary use /unbanip <playername> to remove his ip ban");
-            }
+        if (!result.isEmpty()) {
+            plugin.getServer().unbanIP(result);
+        } else {
+            sender.sendMessage(ChatColor.RED + "No ip matches on that username D:");
+            return;
         }
+        J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Unbanning " + args[0] + "'s ip (" + result + ") by " + sender.getName());
     }
+
 }
