@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import to.joe.j2mc.bans.command.AddBanCommand;
 import to.joe.j2mc.bans.command.BanCommand;
+import to.joe.j2mc.bans.command.StompCommand;
 import to.joe.j2mc.bans.command.J2LookupCommand;
 import to.joe.j2mc.bans.command.KickCommand;
 import to.joe.j2mc.bans.command.UnbanCommand;
@@ -114,6 +115,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
 
         this.getCommand("ban").setExecutor(new BanCommand(this));
         this.getCommand("addban").setExecutor(new AddBanCommand(this));
+        this.getCommand("stomp").setExecutor(new StompCommand(this));
         this.getCommand("kick").setExecutor(new KickCommand(this));
         this.getCommand("unban").setExecutor(new UnbanCommand(this));
         this.getCommand("j2lookup").setExecutor(new J2LookupCommand(this));
