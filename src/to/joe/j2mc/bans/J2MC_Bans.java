@@ -32,13 +32,16 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
     private ArrayList<Ban> bans;
     private Object bansSync = new Object();
     private final String joinError = "";
-
-    public void callAddBan(String adminName, String[] split, Location location, boolean announce) {
-        // TODO: Co-op ban runners(mcbans/mcbouncer)
-        String banReason = "";
-        banReason = this.combineSplit(1, split, " ");
-        final String name = split[0];
-
+    
+    /**
+     * 
+     * @param user Name of the user being banned
+     * @param admin Name of the admin performing the ban
+     * @param reason Reason for the ban
+     * @param location Location of ban, provide with null if there isn't a location (e.g console/irc)
+     * @param announce Announce the ban in chat?
+     */
+    public void ban(String user, String admin, String reason, Location location, boolean announce) {
         double x = 0, y = 0, z = 0;
         float pitch = 0, yaw = 0;
         String world = "";
@@ -52,12 +55,12 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
-        final long unBanTime = 0; // TODO handle tempbans
+        final long unBanTime = 0; // If we ever add tempban handling /o\
         try {
             final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("INSERT INTO j2bans (name,reason,admin,unbantime,timeofban,x,y,z,pitch,yaw,world,server) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-            ps.setString(1, name);
-            ps.setString(2, banReason);
-            ps.setString(3, adminName);
+            ps.setString(1, user);
+            ps.setString(2, reason);
+            ps.setString(3, admin);
             ps.setLong(4, unBanTime);
             ps.setLong(5, timeNow);
             ps.setDouble(6, x);
@@ -68,7 +71,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             ps.setString(11, world);
             ps.setInt(12, J2MC_Manager.getServerID());
             ps.execute();
-            final Ban newban = new Ban(name.toLowerCase(), banReason, unBanTime, timeNow, timeNow, false);
+            final Ban newban = new Ban(user, reason, unBanTime, timeNow, timeNow, false);
             synchronized (this.bansSync) {
                 this.bans.add(newban);
             }
@@ -78,20 +81,20 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             this.getLogger().log(Level.SEVERE, "Oh shit! Class not found when adding a ban!", e);
         }
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if ((p != null) && p.getName().equalsIgnoreCase(name)) {
-                p.kickPlayer("Banned: " + banReason);
+            if ((p != null) && p.getName().equalsIgnoreCase(user)) {
+                p.kickPlayer("Banned: " + reason);
                 if (announce) {
                     p.getWorld().strikeLightningEffect(p.getLocation());
-                    this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + banReason + ")"));
+                    this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + reason + ")"));
                 }
-                J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + name + " out of the server");
+                J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Knocked " + user + " out of the server");
                 break;
             }
         }
         if (announce) {
-            J2MC_Manager.getCore().messageByNoPermission(ChatColor.RED + name + " banned (" + banReason + ")", "j2mc.core.admin");
+            J2MC_Manager.getCore().messageByNoPermission(ChatColor.RED + user + " banned (" + reason + ")", "j2mc.core.admin");
         }
-        J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Banning " + name + " by " + adminName + ": " + banReason);
+        J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Banning " + user + " by " + admin + ": " + reason);
     }
 
     public String combineSplit(int startIndex, String[] string, String seperator) {

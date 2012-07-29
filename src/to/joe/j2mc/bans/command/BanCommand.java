@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import to.joe.j2mc.bans.J2MC_Bans;
+import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
@@ -32,13 +33,13 @@ public class BanCommand extends MasterCommand {
             return;
         }
         Location loc;
-        args[0] = target.getName();
+        String banReason = J2MC_Core.combineSplit(1, args, " ");
         if (!isPlayer) {
             loc = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
         } else {
             loc = player.getLocation();
         }
-        ((J2MC_Bans) this.plugin).callAddBan(sender.getName(), args, loc, true);
+        ((J2MC_Bans) this.plugin).ban(target.getName(), sender.getName(), banReason, loc, true);
     }
 
 }
