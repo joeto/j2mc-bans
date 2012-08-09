@@ -96,15 +96,29 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Banning " + user + " by " + admin + ": " + reason);
     }
-
-    public String combineSplit(int startIndex, String[] string, String seperator) {
-        final StringBuilder builder = new StringBuilder();
-        for (int i = startIndex; i < string.length; i++) {
-            builder.append(string[i]);
-            builder.append(seperator);
+    
+    /**
+     * Get user's ban reason or null if not banned
+     * 
+     * @param player
+     * @return
+     */
+    public String getBanReason (String player) {
+        try {
+            final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT reason WHERE unbanned=0 and name= ?");
+            ps.setString(1, player);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("reason");
+            } else {
+                return null;
+            }
+        } catch (final SQLException e) {
+            
+        } catch (ClassNotFoundException e) {
+            
         }
-        builder.deleteCharAt(builder.length() - seperator.length());
-        return builder.toString();
+        return null;
     }
 
     @Override
@@ -125,8 +139,10 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         this.getCommand("unbanip").setExecutor(new UnbanIPCommand(this));
 
         this.bans = new ArrayList<Ban>();
-        Bukkit.getServer().getPluginManager().registerEvents(this, this);
-        Bukkit.getServer().getPluginManager().registerEvents(new BanListener(this), this);
+        this.getServer().getPluginManager().registerEvents(this, this);
+        this.getServer().getPluginManager().registerEvents(new BanListener(this), this);
+        
+        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HeartbeatTask(this), 100, 100);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -177,6 +193,12 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
     }
 
+    /**
+     * Unban a player
+     * 
+     * @param player to be unbanned
+     * @param Name of admin who is unbanning
+     */
     public void unban(String player, String AdminName) {
         synchronized (this.bansSync) {
             for (final Ban ban : this.bans) {
