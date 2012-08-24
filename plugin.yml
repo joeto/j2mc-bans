@@ -18,11 +18,6 @@ commands:
     usage: /ban player reason
     permission: j2mc.bans.ban
     permission-message: Can't let you do that Star Fox
-  stomp:
-    description: Bans the player and their latest IP address
-    usage: /stomp player reason
-    permission: j2mc.bans.stomp
-    permission-message: Can't let you do that Star Fox
   kick:
     aliases: [k]
     description: Kicks the player
@@ -35,11 +30,6 @@ commands:
     usage: /unban player
     permission: j2mc.bans.unban
     permission-message: Can't let you do that Star Fox
-  unbanip:
-    description: Unbans the user's last used ip
-    usage: /unbanip player
-    permission: j2mc.bans.unbanip
-    permission-message: Can't let you do that Star Fox
   j2lookup:
     aliases: [j2]
     description: Look up player's ban history
@@ -49,22 +39,16 @@ commands:
 permissions:
   j2mc.bans.ban:
     description: ban
-  j2mc.bans.stomp:
-    description: banip
   j2mc.bans.kick:
     description: kick
   j2mc.bans.unban:
     description: unban
-  j2mc.bans.unbanip:
-    description: unbanip
   j2mc.bans.lookup:
     description: lookup
   j2mc.bans.admin:
     description: gives access to all the commands
     children:
       j2mc.bans.ban: true
-      j2mc.bans.stomp: true
       j2mc.bans.kick: true
       j2mc.bans.unban: true
-      j2mc.bans.unbanip: true
       j2mc.bans.lookup: true
