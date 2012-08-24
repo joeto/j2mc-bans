@@ -14,7 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import to.joe.j2mc.bans.command.AddBanCommand;
@@ -28,16 +29,21 @@ import to.joe.j2mc.core.event.MessageEvent;
 public class J2MC_Bans extends JavaPlugin implements Listener {
 
     private ArrayList<Ban> bans;
-    private Object bansSync = new Object();
-    private final String joinError = "";
-    
+    private final Object bansSync = new Object();
+    private static final String joinError = ChatColor.AQUA + "Error. Rejoin in 10 seconds.";
+
     /**
      * 
-     * @param user Name of the user being banned
-     * @param admin Name of the admin performing the ban
-     * @param reason Reason for the ban
-     * @param location Location of ban, provide with null if there isn't a location (e.g console/irc)
-     * @param announce Announce the ban in chat?
+     * @param user
+     *            Name of the user being banned
+     * @param admin
+     *            Name of the admin performing the ban
+     * @param reason
+     *            Reason for the ban
+     * @param location
+     *            Location of ban, provide with null if there isn't a location (e.g console/irc)
+     * @param announce
+     *            Announce the ban in chat?
      */
     public void ban(String user, String admin, String reason, Location location, boolean announce) {
         double x = 0, y = 0, z = 0;
@@ -94,27 +100,27 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Banning " + user + " by " + admin + ": " + reason);
     }
-    
+
     /**
      * Get user's ban reason or null if not banned
      * 
      * @param player
      * @return
      */
-    public String getBanReason (String player) {
+    public String getBanReason(String player) {
         try {
             final PreparedStatement ps = J2MC_Manager.getMySQL().getFreshPreparedStatementHotFromTheOven("SELECT reason WHERE unbanned=0 and name= ?");
             ps.setString(1, player);
-            ResultSet rs = ps.executeQuery();
+            final ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString("reason");
             } else {
                 return null;
             }
         } catch (final SQLException e) {
-            
-        } catch (ClassNotFoundException e) {
-            
+
+        } catch (final ClassNotFoundException e) {
+
         }
         return null;
     }
@@ -137,33 +143,29 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         this.bans = new ArrayList<Ban>();
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getServer().getPluginManager().registerEvents(new BanListener(this), this);
-        
+
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HeartbeatTask(this), 100, 100);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerPreLogin(PlayerPreLoginEvent event) {
+    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         final String name = event.getName();
         final Date curTime = new Date();
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
-        try {
-            synchronized (this.bansSync) {
-                for (final Ban ban : this.bans) {
-                    if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
-                        // unban(user);
-                        // tempbans
-                    }
-                    if ((ban.getTimeLoaded() > (timeNow - 60)) && ban.getName().equalsIgnoreCase(name) && ban.isBanned()) {
-                        reason = "Banned: " + ban.getReason();
-                    }
-                    if (ban.getTimeLoaded() < (timeNow - 60)) {
-                        this.bans.remove(ban);
-                    }
+        synchronized (this.bansSync) {
+            for (final Ban ban : this.bans) {
+                /*if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
+                    // unban(user);
+                    // tempbans
+                }*/
+                if ((ban.getTimeLoaded() > (timeNow - 60)) && ban.getName().equalsIgnoreCase(name) && ban.isBanned()) {
+                    reason = "Banned: " + ban.getReason();
+                }
+                if (ban.getTimeLoaded() < (timeNow - 60)) {
+                    this.bans.remove(ban);
                 }
             }
-        } catch (Exception e) {
-            reason = this.joinError;
         }
         if (reason == null) {
             ResultSet rs = null;
@@ -177,23 +179,25 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 }
             } catch (final Exception e) {
                 e.printStackTrace();
-                reason = this.joinError;
+                reason = J2MC_Bans.joinError;
             }
         }
         if (reason != null) {
-            if (!reason.equals(this.joinError)) {
+            if (!reason.equals(J2MC_Bans.joinError)) {
                 reason = "Visit http://www.joe.to/unban/ for unban";
             }
             event.setKickMessage(reason);
-            event.disallow(PlayerPreLoginEvent.Result.KICK_BANNED, reason);
+            event.disallow(Result.KICK_BANNED, reason);
         }
     }
 
     /**
      * Unban a player
      * 
-     * @param player to be unbanned
-     * @param Name of admin who is unbanning
+     * @param player
+     *            to be unbanned
+     * @param Name
+     *            of admin who is unbanning
      */
     public void unban(String player, String AdminName) {
         synchronized (this.bansSync) {
