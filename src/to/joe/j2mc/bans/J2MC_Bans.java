@@ -81,8 +81,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             }
         } catch (final SQLException e) {
             this.getLogger().log(Level.SEVERE, "Oh shit! SQL exception when adding a ban!", e);
-        } catch (final ClassNotFoundException e) {
-            this.getLogger().log(Level.SEVERE, "Oh shit! Class not found when adding a ban!", e);
         }
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
             if ((p != null) && p.getName().equalsIgnoreCase(user)) {
@@ -118,8 +116,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 return null;
             }
         } catch (final SQLException e) {
-
-        } catch (final ClassNotFoundException e) {
 
         }
         return null;
@@ -213,8 +209,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             ps.execute();
         } catch (final SQLException e) {
             this.getLogger().log(Level.SEVERE, "Oh shit! SQL exception when unbanning!", e);
-        } catch (final ClassNotFoundException e) {
-            this.getLogger().log(Level.SEVERE, "Oh shit! Class not found when unbanning!", e);
         }
         J2MC_Manager.getCore().adminAndLog(ChatColor.RED + "Unbanning " + player + " by " + AdminName);
     }

@@ -36,7 +36,6 @@ public class UnbanCommand extends MasterCommand {
         } catch (final SQLException e) {
             this.plugin.getLogger().warning(ChatColor.RED + "Unable to load user/ip from MySQL. Oh hell");
             this.plugin.getLogger().log(Level.SEVERE, "SQL Exception:", e);
-        } catch (final ClassNotFoundException e) {
         }
         try {
             if (rs.next()) {
