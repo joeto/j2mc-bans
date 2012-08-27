@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -150,7 +151,9 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         final long timeNow = curTime.getTime() / 1000;
         String reason = null;
         synchronized (this.bansSync) {
-            for (final Ban ban : this.bans) {
+            Iterator<Ban> i = this.bans.iterator();
+            while(i.hasNext()) {
+                Ban ban = i.next();
                 /*if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
                     // unban(user);
                     // tempbans
@@ -159,7 +162,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                     reason = "Banned: " + ban.getReason();
                 }
                 if (ban.getTimeLoaded() < (timeNow - 60)) {
-                    this.bans.remove(ban);
+                    i.remove();
                 }
             }
         }
