@@ -11,7 +11,7 @@ import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.event.MessageEvent;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 
-public class KickCommand extends MasterCommand {
+public class KickCommand extends MasterCommand<J2MC_Bans> {
 
     public KickCommand(J2MC_Bans Bans) {
         super(Bans);

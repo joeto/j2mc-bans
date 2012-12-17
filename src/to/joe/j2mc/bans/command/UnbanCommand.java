@@ -13,7 +13,7 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class UnbanCommand extends MasterCommand {
+public class UnbanCommand extends MasterCommand<J2MC_Bans> {
 
     public UnbanCommand(J2MC_Bans Bans) {
         super(Bans);
@@ -26,7 +26,7 @@ public class UnbanCommand extends MasterCommand {
             return;
         }
         final String name = args[0];
-        ((J2MC_Bans) this.plugin).unban(name, sender.getName());
+        this.plugin.unban(name, sender.getName());
         ResultSet rs = null;
         String result = "";
         try {

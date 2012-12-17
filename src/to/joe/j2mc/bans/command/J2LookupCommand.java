@@ -14,13 +14,10 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class J2LookupCommand extends MasterCommand {
-
-    J2MC_Bans plugin;
+public class J2LookupCommand extends MasterCommand<J2MC_Bans> {
 
     public J2LookupCommand(J2MC_Bans Bans) {
         super(Bans);
-        this.plugin = Bans;
     }
 
     @Override

@@ -10,7 +10,7 @@ import to.joe.j2mc.bans.J2MC_Bans;
 import to.joe.j2mc.core.J2MC_Core;
 import to.joe.j2mc.core.command.MasterCommand;
 
-public class AddBanCommand extends MasterCommand {
+public class AddBanCommand extends MasterCommand<J2MC_Bans> {
 
     public AddBanCommand(J2MC_Bans Bans) {
         super(Bans);
@@ -31,7 +31,7 @@ public class AddBanCommand extends MasterCommand {
         }
         String target = args[0];
         String reason = J2MC_Core.combineSplit(1, args, " ");
-        ((J2MC_Bans) this.plugin).ban(target, sender.getName(), reason, loc, false);
+        this.plugin.ban(target, sender.getName(), reason, loc, false);
     }
 
 }

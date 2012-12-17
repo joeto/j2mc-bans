@@ -12,7 +12,7 @@ import to.joe.j2mc.core.J2MC_Manager;
 import to.joe.j2mc.core.command.MasterCommand;
 import to.joe.j2mc.core.exceptions.BadPlayerMatchException;
 
-public class BanCommand extends MasterCommand {
+public class BanCommand extends MasterCommand<J2MC_Bans> {
 
     public BanCommand(J2MC_Bans Bans) {
         super(Bans);
@@ -39,7 +39,7 @@ public class BanCommand extends MasterCommand {
         } else {
             loc = player.getLocation();
         }
-        ((J2MC_Bans) this.plugin).ban(target.getName(), sender.getName(), banReason, loc, true);
+        this.plugin.ban(target.getName(), sender.getName(), banReason, loc, true);
     }
 
 }
