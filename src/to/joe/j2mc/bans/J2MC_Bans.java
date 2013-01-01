@@ -141,7 +141,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getServer().getPluginManager().registerEvents(new BanListener(this), this);
 
-        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new HeartbeatTask(this), 100, 100);
+        this.getServer().getScheduler().runTaskTimerAsynchronously(this, new HeartbeatTask(this), 100, 100);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

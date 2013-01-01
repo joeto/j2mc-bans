@@ -5,7 +5,6 @@ package to.joe.j2mc.bans;
  * 
  * Classy bans for the classy gentleman
  */
-
 public class Ban {
     private final String name;
     private String reason;
