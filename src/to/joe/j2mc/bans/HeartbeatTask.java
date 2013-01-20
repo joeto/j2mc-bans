@@ -20,7 +20,7 @@ public class HeartbeatTask implements Runnable {
                 this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        player.kickPlayer("Banned: " + reason);
+                        player.kickPlayer(String.format(J2MC_Bans.banMessage, "have been", reason));
                     }
                 });
             }

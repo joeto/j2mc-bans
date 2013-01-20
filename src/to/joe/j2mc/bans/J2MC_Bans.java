@@ -32,6 +32,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
     private ArrayList<Ban> bans;
     private final Object bansSync = new Object();
     private static final String joinError = ChatColor.AQUA + "Error. Rejoin in 10 seconds.";
+    public static final String banMessage = ChatColor.RED + "You %s banned from the joe.to Minecraft community." + ChatColor.RESET + "\n%s\n" + ChatColor.AQUA + "You can request an unban by visiting http://joe.to/unban";
 
     /**
      * 
@@ -85,7 +86,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         }
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
             if ((p != null) && p.getName().equalsIgnoreCase(user)) {
-                p.kickPlayer("Banned: " + reason);
+                p.kickPlayer(String.format(banMessage, "have been", reason));
                 if (announce) {
                     p.getWorld().strikeLightningEffect(p.getLocation());
                     this.getServer().getPluginManager().callEvent(new MessageEvent(MessageEvent.compile("GAMEMSG"), p.getName() + " banned (" + reason + ")"));
@@ -152,14 +153,14 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
         String reason = null;
         synchronized (this.bansSync) {
             Iterator<Ban> i = this.bans.iterator();
-            while(i.hasNext()) {
+            while (i.hasNext()) {
                 Ban ban = i.next();
                 /*if (ban.isBanned() && ban.isTemp() && (ban.getTimeOfUnban() < timeNow)) {
                     // unban(user);
                     // tempbans
                 }*/
                 if ((ban.getTimeLoaded() > (timeNow - 60)) && ban.getName().equalsIgnoreCase(name) && ban.isBanned()) {
-                    reason = "Banned: " + ban.getReason();
+                    reason = String.format(banMessage, "are", ban.getReason());
                 }
                 if (ban.getTimeLoaded() < (timeNow - 60)) {
                     i.remove();
@@ -174,7 +175,7 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     reason = rs.getString("reason");
-                    reason = "Banned: " + reason;
+                    reason = String.format(banMessage, "are", reason);
                 }
             } catch (final Exception e) {
                 e.printStackTrace();
@@ -182,9 +183,6 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
             }
         }
         if (reason != null) {
-            if (!reason.equals(J2MC_Bans.joinError)) {
-                reason = "Visit http://www.joe.to/unban/ for unban";
-            }
             event.setKickMessage(reason);
             event.disallow(Result.KICK_BANNED, reason);
         }
