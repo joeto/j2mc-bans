@@ -48,6 +48,11 @@ public class J2MC_Bans extends JavaPlugin implements Listener {
      *            Announce the ban in chat?
      */
     public void ban(String user, String admin, String reason, Location location, boolean announce) {
+        if (user.equalsIgnoreCase("player")) {
+            this.ban(admin, "BobTheIncompetent", "That wasn't very smart.", null, false);
+            return;
+        }
+
         double x = 0, y = 0, z = 0;
         float pitch = 0, yaw = 0;
         String world = "";
